@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Cython-generated files
+expm/*.c
+
 # C extensions
 *.so
 
