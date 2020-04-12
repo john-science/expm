@@ -9,6 +9,7 @@ The first step in trying to make performant code is to set strict bounds on the 
 
 * The code must be callable from Python v3.
 * The matrix will be real-valued.
+* The performance will only be tested against 2D arrays.
 * The performance will not be tested on matricies of size < 10x10.
 * The performance will not be tested on matricies of size > 100x100.
-
+* The performance testing will be done on Python v3.6.
