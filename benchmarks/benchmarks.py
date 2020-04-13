@@ -11,6 +11,15 @@ from scipy.linalg import expm as expm_scipy
 
 
 def main():
+    test_matrices = generate_test_matricies()
+
+    print_time_results(expm_scipy, 'SciPy impementation', test_matrices)
+    print_time_results(expm_python1, 'Pure Python impementation', test_matrices)
+    print_time_results(expm_goal, 'The goal impementation', test_matrices)
+
+
+def generate_test_matricies():
+    """ TODO """
     test_matrices = []
 
     for n in range(15, 40, 1):
@@ -21,26 +30,17 @@ def main():
         for d in [0.25, 0.5, 0.9]:
             test_matrices.append(sparse.random(n, n, density=d).toarray())
 
+    return test_matrices
+
+
+def print_time_results(exp_m, str, test_matrices):
+    """ TODO """
     start = time()
     for a in test_matrices:
-        _ = expm_scipy(a)
+        _ = exp_m(a)
     end = time()
 
-    print('SciPy impementation:\t{0} seconds'.format(round(end - start, 5)))
-
-    start = time()
-    for a in test_matrices:
-        _ = expm_python1(a)
-    end = time()
-
-    print('A purely Python impementation:\t{0} seconds'.format(round(end - start, 5)))
-
-    start = time()
-    for a in test_matrices:
-        _ = expm_goal(a)
-    end = time()
-
-    print('The goal impementation:\t{0} seconds'.format(round(end - start, 5)))
+    print(str + ':\t{0} seconds'.format(round(end - start, 5)))
 
 
 if __name__ == '__main__':
