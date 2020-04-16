@@ -1,6 +1,8 @@
 """ These are the benchmarks against which we will test various versions of matrix exponentials in Python.
 """
 # general imports
+import pyximport;
+pyximport.install()
 import numpy as np
 import scipy.sparse as sparse
 from time import time
@@ -13,9 +15,9 @@ from scipy.linalg import expm as expm_scipy
 def main():
     test_matrices = generate_test_matricies()
 
-    print_time_results(expm_scipy, 'SciPy impementation', test_matrices)
-    print_time_results(expm_python1, 'Pure Python impementation', test_matrices)
-    print_time_results(expm_goal, 'The goal impementation', test_matrices)
+    print_time_results(expm_scipy, 'SciPy implementation', test_matrices)
+    print_time_results(expm_python1, 'Pure Python implementation', test_matrices)
+    print_time_results(expm_goal, 'The goal implementation', test_matrices)
 
 
 def generate_test_matricies():
