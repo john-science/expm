@@ -45,8 +45,9 @@ if has_cython:
     IS_WINDOWS = True if (os_name.lower() == 'nt' or 'win' in platform.lower()) else False
     COMP_DIRS = {'language_level': 3, 'boundscheck': False, 'initializedcheck': False, 'cdivision': True}
     sep = '\\' if IS_WINDOWS else '/'
-    ext_modules = [Extension(p[:-4].replace(sep, '.'), [p, p[:-2] + 'y'], include_dirs=[np.get_include(), '.'])
+    ext_modules = [Extension(p[:-4].replace(sep, '.'), [p, p[:-2] + 'y'])
                    for p in glob(sep.join(['expm', '*.pxd']))]
+    ext_modules += [p for p in glob(sep.join(['expm', '*.pyx']))]
     ext_modules_list = cythonize(ext_modules, annotate=False, force=FORCE_REBUILD, compiler_directives=COMP_DIRS)
 else:
     ext_modules_list = []
@@ -82,4 +83,5 @@ setup(
     setup_requires=["numpy>=1.13.1,<=1.16.4"],
     install_requires=["cython>=0.27.0,<=0.29.16",
                       "numpy>=1.13.1,<=1.16.4"],
+    include_dirs=[np.get_include()],
     zip_safe=False)

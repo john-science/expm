@@ -8,8 +8,8 @@ np.import_array()
 #ctypedef np.float_t DTYPE_t
 
 
-#def expm(np.float64_t[:, :] A):
-def expm(A):
+#def expm_test(np.float64_t[:, :] A):
+def expm_test(A):
     """ Compute the matrix exponential using Pade approximation
     https://github.com/rngantner/Pade_PyCpp/blob/master/src/expm.py
 
