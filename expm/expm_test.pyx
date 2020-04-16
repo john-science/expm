@@ -4,12 +4,24 @@ import numpy as np
 cimport numpy as np
 np.import_array()
 
-#DTYPE = np.float
-#ctypedef np.float_t DTYPE_t
+# let's pull as many math functions as we can from C
+# TODO: The types here are double, not np.whatever. Is that a problem?
+cdef extern from "<math.h>" nogil:
+    double ceil(double x)
+    double log2(double x)
+
+# trying to sort out these NumPy types
+DTYPE = np.float
+ctypedef np.float_t DTYPE_t
+
+# TODO: Testing pulling these constants out
+cdef DTYPE_t b0 = 120.
+cdef DTYPE_t b1 = 60.
+cdef DTYPE_t b2 = 12.
+cdef DTYPE_t b3 = 1.
 
 
-#def expm_test(np.float64_t[:, :] A):
-def expm_test(A):
+def expm_test(np.ndarray[DTYPE_t, ndim=2] A not None):
     """ Compute the matrix exponential using Pade approximation
     https://github.com/rngantner/Pade_PyCpp/blob/master/src/expm.py
 
@@ -18,10 +30,10 @@ def expm_test(A):
     Returns:
         np.array: Matrix (shape(M,M)) exponential of A
     """
-    #cdef int size_side = A.shape[0]
-    A_L1 = np.linalg.norm(A, 1)
-    #cdef int n_squarings = 0
-    n_squarings = 0
+    cdef int n = A.shape[0]
+    cdef int n_squarings = 0
+    cdef np.ndarray[DTYPE_t, ndim=2] U, V, P, Q, R
+    cdef DTYPE_t A_L1 = np.linalg.norm(A, 1)
 
     if A_L1 < 1.495585217958292e-2:
         U, V = _pade3(A)
@@ -32,15 +44,19 @@ def expm_test(A):
     elif A_L1 < 2.097847961257068:
         U, V = _pade9(A)
     else:
-        n_squarings = max(0, int(np.ceil(np.log2(A_L1 / 5.371920351148152))))
-        A = A / 2 ** n_squarings
-        #for i in range(size_side):
-        #    for j in range(size_side):
-        #        A[i,j] = A[i,j] / 2 ** n_squarings
+        n_squarings = max(0, int(ceil(log2(A_L1 / 5.371920351148152))))
+        for i in range(n):
+            for j in range(n):
+                A[i,j] = A[i,j] / 2 ** n_squarings
         U, V = _pade13(A)
 
-    P = U + V  # p_m(A) : numerator
-    Q = -U + V  # q_m(A) : denominator
+    P = np.zeros((n, n), dtype=DTYPE)  # p_m(A) : numerator
+    Q = np.zeros((n, n), dtype=DTYPE)  # q_m(A) : denominator
+    for i in range(n):
+        for j in range(n):
+            P[i, j] = V[i, j] + U[i, j]
+            Q[i, j] = V[i, j] - U[i, j]
+
     R = np.linalg.solve(Q, P)
 
     # squaring step to undo scaling
@@ -50,7 +66,7 @@ def expm_test(A):
     return R
 
 
-def _pade3(A):
+cdef _pade3(np.ndarray[DTYPE_t, ndim=2] A):
     """ Helper method for expm
 
     Args:
@@ -58,16 +74,16 @@ def _pade3(A):
     Returns:
         tuple: Mystery Components
     """
-    b = tuple([120., 60., 12., 1.])
-    shape = (len(A[:, 0]), len(A[0, :]))
-    ident = np.eye(*shape, dtype='float64')
+    cdef int n = A.shape[0]
+    cdef tuple shape = (n, n)
+    ident = np.eye(*shape, dtype=DTYPE)
     A2 = np.dot(A, A)
-    U = np.dot(A, (b[3] * A2 + b[1] * ident))
-    V = b[2] * A2 + b[0] * ident
+    U = np.dot(A, (b3 * A2 + b1 * ident))
+    V = b2 * A2 + b0 * ident
     return U, V
 
 
-def _pade5(A):
+cdef _pade5(np.ndarray[DTYPE_t, ndim=2] A):
     """ Helper method for expm
 
     Args:
@@ -85,7 +101,7 @@ def _pade5(A):
     return U, V
 
 
-def _pade7(A):
+cdef _pade7(np.ndarray[DTYPE_t, ndim=2] A):
     """ Helper method for expm
 
     Args:
@@ -104,7 +120,7 @@ def _pade7(A):
     return U, V
 
 
-def _pade9(A):
+cdef _pade9(np.ndarray[DTYPE_t, ndim=2] A):
     """ Helper method for expm
 
     Args:
@@ -124,7 +140,7 @@ def _pade9(A):
     return U, V
 
 
-def _pade13(A):
+cdef _pade13(np.ndarray[DTYPE_t, ndim=2] A):
     """ Helper method for expm
 
     Args:
