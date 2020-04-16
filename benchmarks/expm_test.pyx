@@ -1,19 +1,15 @@
+# cython: language_level=3
 cimport cython
 import numpy as np
 cimport numpy as np
+np.import_array()
+
+#DTYPE = np.float
+#ctypedef np.float_t DTYPE_t
 
 
-DTYPE = np.float
-ctypedef np.float_t DTYPE_t
-
-
-cdef extern from "lib/cfunc.h":
-    # Imports definitions from a c header file
-    # Corresponding source file (cfunc.c) must be added to
-    # the extension definition in setup.py for proper compiling & linking
-
-
-def expm(double[:, :] A):
+#def expm(np.float64_t[:, :] A):
+def expm(A):
     """ Compute the matrix exponential using Pade approximation
     https://github.com/rngantner/Pade_PyCpp/blob/master/src/expm.py
 
@@ -22,8 +18,10 @@ def expm(double[:, :] A):
     Returns:
         np.array: Matrix (shape(M,M)) exponential of A
     """
+    #cdef int size_side = A.shape[0]
     A_L1 = np.linalg.norm(A, 1)
-    cdef int n_squarings = 0
+    #cdef int n_squarings = 0
+    n_squarings = 0
 
     if A_L1 < 1.495585217958292e-2:
         U, V = _pade3(A)
@@ -36,6 +34,9 @@ def expm(double[:, :] A):
     else:
         n_squarings = max(0, int(np.ceil(np.log2(A_L1 / 5.371920351148152))))
         A = A / 2 ** n_squarings
+        #for i in range(size_side):
+        #    for j in range(size_side):
+        #        A[i,j] = A[i,j] / 2 ** n_squarings
         U, V = _pade13(A)
 
     P = U + V  # p_m(A) : numerator
