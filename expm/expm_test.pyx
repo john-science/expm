@@ -94,12 +94,12 @@ cdef _pade5(np.ndarray[DTYPE_t, ndim=2] A):
     A2 = np.dot(A, A)
     A4 = np.dot(A2, A2)
     U = np.dot(A,
-               square_tri_add(square_mult(A4, pade5_b5),
-                              square_mult(A2, pade5_b3),
-                              square_mult(ident, pade5_b1)))
-    V = square_tri_add(square_mult(A4, pade5_b4),
-                       square_mult(A2, pade5_b2),
-                       square_mult(ident, pade5_b0))
+               square_add3(square_mult(A4, pade5_b5),
+                           square_mult(A2, pade5_b3),
+                           square_mult(ident, pade5_b1)))
+    V = square_add3(square_mult(A4, pade5_b4),
+                    square_mult(A2, pade5_b2),
+                    square_mult(ident, pade5_b0))
     return U, V
 
 
@@ -118,14 +118,14 @@ cdef _pade7(np.ndarray[DTYPE_t, ndim=2] A):
     A4 = np.dot(A2, A2)
     A6 = np.dot(A4, A2)
     U = np.dot(A,
-               square_quad_add(square_mult(A6, pade7_b7),
-                               square_mult(A4, pade7_b5),
-                               square_mult(A2, pade7_b3),
-                               square_mult(ident, pade7_b1)))
-    V = square_quad_add(square_mult(A6, pade7_b6),
-                        square_mult(A4, pade7_b4),
-                        square_mult(A2, pade7_b2),
-                        square_mult(ident, pade7_b0))
+               square_add4(square_mult(A6, pade7_b7),
+                           square_mult(A4, pade7_b5),
+                           square_mult(A2, pade7_b3),
+                           square_mult(ident, pade7_b1)))
+    V = square_add4(square_mult(A6, pade7_b6),
+                    square_mult(A4, pade7_b4),
+                    square_mult(A2, pade7_b2),
+                    square_mult(ident, pade7_b0))
     return U, V
 
 
@@ -139,22 +139,22 @@ cdef _pade9(np.ndarray[DTYPE_t, ndim=2] A):
     """
     cdef int n = A.shape[0]
     cdef np.ndarray[DTYPE_t, ndim=2] A2, A4, A6, A8, U, V
-    cdef np.ndarray[DTYPE_t, ndim=2] ident = square_identity(n)
+    cdef np.ndarray[DTYPE_t, ndim=2] ii = square_identity(n)
     A2 = np.dot(A, A)
     A4 = np.dot(A2, A2)
     A6 = np.dot(A4, A2)
     A8 = np.dot(A6, A2)
     U = np.dot(A,
-               square_add(square_tri_add(square_mult(A8, pade9_b9),
-                                         square_mult(A6, pade9_b7),
-                                         square_mult(A4, pade9_b5)),
-                          square_add(square_mult(A2, pade9_b3),
-                                     square_mult(ident, pade9_b1))))
-    V = square_add(square_tri_add(square_mult(A8, pade9_b8),
-                                  square_mult(A6 , pade9_b6),
-                                  square_mult(A4, pade9_b4)),
-                   square_add(square_mult(A2, pade9_b2),
-                              square_mult(ident, pade9_b0)))
+               square_add5(square_mult(A8, pade9_b9),
+                           square_mult(A6, pade9_b7),
+                           square_mult(A4, pade9_b5),
+                           square_mult(A2, pade9_b3),
+                           square_mult(ii, pade9_b1)))
+    V = square_add5(square_mult(A8, pade9_b8),
+                    square_mult(A6 , pade9_b6),
+                    square_mult(A4, pade9_b4),
+                    square_mult(A2, pade9_b2),
+                    square_mult(ii, pade9_b0))
     return U, V
 
 
@@ -174,21 +174,21 @@ cdef _pade13(np.ndarray[DTYPE_t, ndim=2] A):
     A6 = np.dot(A4, A2)
     U = np.dot(A,
                square_add(np.dot(A6,
-                                 square_tri_add(square_mult(A6, pade13_b13),
-                                                square_mult(A4, pade13_b11),
-                                                square_mult(A2, pade13_b9))),
-                                 square_quad_add(square_mult(A6, pade13_b7),
-                                                 square_mult(A4, pade13_b5),
-                                                 square_mult(A2, pade13_b3),
-                                                 square_mult(ident, pade13_b1))))
+                                 square_add3(square_mult(A6, pade13_b13),
+                                             square_mult(A4, pade13_b11),
+                                             square_mult(A2, pade13_b9))),
+                          square_add4(square_mult(A6, pade13_b7),
+                                      square_mult(A4, pade13_b5),
+                                      square_mult(A2, pade13_b3),
+                                      square_mult(ident, pade13_b1))))
     V = square_add(np.dot(A6,
-                          square_tri_add(square_mult(A6, pade13_b12),
-                                         square_mult(A4, pade13_b10),
-                                         square_mult(A2, pade13_b8))),
-                   square_quad_add(square_mult(A6, pade13_b6),
-                                   square_mult(A4, pade13_b4),
-                                   square_mult(A2, pade13_b2),
-                                   square_mult(ident, pade13_b0)))
+                          square_add3(square_mult(A6, pade13_b12),
+                                      square_mult(A4, pade13_b10),
+                                      square_mult(A2, pade13_b8))),
+                   square_add4(square_mult(A6, pade13_b6),
+                               square_mult(A4, pade13_b4),
+                               square_mult(A2, pade13_b2),
+                               square_mult(ident, pade13_b0)))
     return U, V
 
 
@@ -232,7 +232,7 @@ cdef square_add(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b):
     return x
 
 
-cdef square_tri_add(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b, np.ndarray[DTYPE_t, ndim=2] c):
+cdef square_add3(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b, np.ndarray[DTYPE_t, ndim=2] c):
     """ TODO """
     int n = a.shape[0]
     np.ndarray[DTYPE_t, ndim=2] x = np.zeros((n, n), dtype=DTYPE_t)
@@ -244,7 +244,8 @@ cdef square_tri_add(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b
     return x
 
 
-cdef square_quad_add(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b, np.ndarray[DTYPE_t, ndim=2] c, np.ndarray[DTYPE_t, ndim=2] d):
+cdef square_add4(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b, np.ndarray[DTYPE_t, ndim=2] c,
+                 np.ndarray[DTYPE_t, ndim=2] d):
     """ TODO """
     int n = a.shape[0]
     np.ndarray[DTYPE_t, ndim=2] x = np.zeros((n, n), dtype=DTYPE_t)
@@ -252,6 +253,19 @@ cdef square_quad_add(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] 
     for i in range(n):
         for j in range(n):
             x[i, j] = a[i, j] + b[i, j] + c[i, j] + d[i, j]
+
+    return x
+
+
+cdef square_add5(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b, np.ndarray[DTYPE_t, ndim=2] c,
+                 np.ndarray[DTYPE_t, ndim=2] d, np.ndarray[DTYPE_t, ndim=2] e):
+    """ TODO """
+    int n = a.shape[0]
+    np.ndarray[DTYPE_t, ndim=2] x = np.zeros((n, n), dtype=DTYPE_t)
+
+    for i in range(n):
+        for j in range(n):
+            x[i, j] = a[i, j] + b[i, j] + c[i, j] + d[i, j] + e[i, j]
 
     return x
 
