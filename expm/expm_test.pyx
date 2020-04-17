@@ -14,12 +14,6 @@ cdef extern from "<math.h>" nogil:
 DTYPE = np.float
 ctypedef np.float_t DTYPE_t
 
-# TODO: Testing pulling these constants out
-cdef DTYPE_t b0 = 120.
-cdef DTYPE_t b1 = 60.
-cdef DTYPE_t b2 = 12.
-cdef DTYPE_t b3 = 1.
-
 
 def expm_test(np.ndarray[DTYPE_t, ndim=2] A not None):
     """ Compute the matrix exponential using Pade approximation
@@ -75,11 +69,14 @@ cdef _pade3(np.ndarray[DTYPE_t, ndim=2] A):
         tuple: Mystery Components
     """
     cdef int n = A.shape[0]
-    cdef tuple shape = (n, n)
-    ident = np.eye(*shape, dtype=DTYPE)
+    cdef np.ndarray[DTYPE_t, ndim=2] A2, U, V
+    cdef np.ndarray[DTYPE_t, ndim=2] ident = square_identity(n)
     A2 = np.dot(A, A)
-    U = np.dot(A, (b3 * A2 + b1 * ident))
-    V = b2 * A2 + b0 * ident
+    U = np.dot(A,
+               square_add(square_mult(A2, pade3_b3),
+                          square_mult(ident, pade3_b1)))
+    V = square_add(square_mult(A2, pade3_b2),
+                   square_mult(ident, pade3_b0))
     return U, V
 
 
@@ -91,13 +88,18 @@ cdef _pade5(np.ndarray[DTYPE_t, ndim=2] A):
     Returns:
         tuple: Mystery Components
     """
-    b = tuple([30240., 15120., 3360., 420., 30., 1.])
-    shape = (len(A[:, 0]), len(A[0, :]))
-    ident = np.eye(*shape, dtype='float64')
+    n = A.shape[0]
+    cdef np.ndarray[DTYPE_t, ndim=2] ident = square_identity(n)
+    cdef np.ndarray[DTYPE_t, ndim=2] A2, A4, U, V
     A2 = np.dot(A, A)
     A4 = np.dot(A2, A2)
-    U = np.dot(A, b[5] * A4 + b[3] * A2 + b[1] * ident)
-    V = b[4] * A4 + b[2] * A2 + b[0] * ident
+    U = np.dot(A,
+               square_tri_add(square_mult(A4, pade5_b5),
+                              square_mult(A2, pade5_b3),
+                              square_mult(ident, pade5_b1)))
+    V = square_tri_add(square_mult(A4, pade5_b4),
+                       square_mult(A2, pade5_b2),
+                       square_mult(ident, pade5_b0))
     return U, V
 
 
@@ -109,14 +111,21 @@ cdef _pade7(np.ndarray[DTYPE_t, ndim=2] A):
     Returns:
         tuple: Mystery Components
     """
-    b = tuple([17297280., 8648640., 1995840., 277200., 25200., 1512., 56., 1.])
-    shape = (len(A[:, 0]), len(A[0, :]))
-    ident = np.eye(*shape, dtype='float64')
+    cdef int n = A.shape[0]
+    cdef np.ndarray[DTYPE_t, ndim=2] ident = square_identity(n)
+    cdef np.ndarray[DTYPE_t, ndim=2] A2, A4, A6, U, V
     A2 = np.dot(A, A)
     A4 = np.dot(A2, A2)
     A6 = np.dot(A4, A2)
-    U = np.dot(A, b[7] * A6 + b[5] * A4 + b[3] * A2 + b[1] * ident)
-    V = b[6] * A6 + b[4] * A4 + b[2] * A2 + b[0] * ident
+    U = np.dot(A,
+               square_quad_add(square_mult(A6, pade7_b7),
+                               square_mult(A4, pade7_b5),
+                               square_mult(A2, pade7_b3),
+                               square_mult(ident, pade7_b1)))
+    V = square_quad_add(square_mult(A6, pade7_b6),
+                        square_mult(A4, pade7_b4),
+                        square_mult(A2, pade7_b2),
+                        square_mult(ident, pade7_b0))
     return U, V
 
 
@@ -128,15 +137,24 @@ cdef _pade9(np.ndarray[DTYPE_t, ndim=2] A):
     Returns:
         tuple: Mystery Components
     """
-    b = tuple([17643225600., 8821612800., 2075673600., 302702400., 30270240., 2162160., 110880., 3960., 90., 1.])
-    shape = (len(A[:, 0]), len(A[0, :]))
-    ident = np.eye(*shape, dtype='float64')
+    cdef int n = A.shape[0]
+    cdef np.ndarray[DTYPE_t, ndim=2] A2, A4, A6, A8, U, V
+    cdef np.ndarray[DTYPE_t, ndim=2] ident = square_identity(n)
     A2 = np.dot(A, A)
     A4 = np.dot(A2, A2)
     A6 = np.dot(A4, A2)
     A8 = np.dot(A6, A2)
-    U = np.dot(A, b[9] * A8 + b[7] * A6 + b[5] * A4 + b[3] * A2 + b[1] * ident)
-    V = b[8] * A8 + b[6] * A6 + b[4] * A4 + b[2] * A2 + b[0] * ident
+    U = np.dot(A,
+               square_add(square_tri_add(square_mult(A8, pade9_b9),
+                                         square_mult(A6, pade9_b7),
+                                         square_mult(A4, pade9_b5)),
+                          square_add(square_mult(A2, pade9_b3),
+                                     square_mult(ident, pade9_b1))))
+    V = square_add(square_tri_add(square_mult(A8, pade9_b8),
+                                  square_mult(A6 , pade9_b6),
+                                  square_mult(A4, pade9_b4)),
+                   square_add(square_mult(A2, pade9_b2),
+                              square_mult(ident, pade9_b0)))
     return U, V
 
 
@@ -148,13 +166,150 @@ cdef _pade13(np.ndarray[DTYPE_t, ndim=2] A):
     Returns:
         tuple: Mystery Components
     """
-    b = tuple([64764752532480000., 32382376266240000., 7771770303897600., 1187353796428800., 129060195264000.,
-               10559470521600., 670442572800., 33522128640., 1323241920., 40840800., 960960., 16380., 182., 1.])
-    shape = (len(A[:, 0]), len(A[0, :]))
-    ident = np.eye(*shape, dtype='float64')
+    cdef int n = A.shape[0]
+    cdef np.ndarray[DTYPE_t, ndim=2] ident = square_identity(n)
+    cdef np.ndarray[DTYPE_t, ndim=2] A2, A4, A6, U, V
     A2 = np.dot(A, A)
     A4 = np.dot(A2, A2)
     A6 = np.dot(A4, A2)
-    U = np.dot(A, np.dot(A6, b[13] * A6 + b[11] * A4 + b[9] * A2) + b[7] * A6 + b[5] * A4 + b[3] * A2 + b[1] * ident)
-    V = np.dot(A6, b[12] * A6 + b[10] * A4 + b[8] * A2) + b[6] * A6 + b[4] * A4 + b[2] * A2 + b[0] * ident
+    U = np.dot(A,
+               square_add(np.dot(A6,
+                                 square_tri_add(square_mult(A6, pade13_b13),
+                                                square_mult(A4, pade13_b11),
+                                                square_mult(A2, pade13_b9))),
+                                 square_quad_add(square_mult(A6, pade13_b7),
+                                                 square_mult(A4, pade13_b5),
+                                                 square_mult(A2, pade13_b3),
+                                                 square_mult(ident, pade13_b1))))
+    V = square_add(np.dot(A6,
+                          square_tri_add(square_mult(A6, pade13_b12),
+                                         square_mult(A4, pade13_b10),
+                                         square_mult(A2, pade13_b8))),
+                   square_quad_add(square_mult(A6, pade13_b6),
+                                   square_mult(A4, pade13_b4),
+                                   square_mult(A2, pade13_b2),
+                                   square_mult(ident, pade13_b0)))
     return U, V
+
+
+cdef square_identity(int n):
+    """ This function produces a square identity matrix
+
+    Args:
+        n (int): size of square matrix
+    Returns:
+        np.array: identity matrix
+    """
+    cdef np.ndarray[DTYPE_t, ndim=2] a = np.zeros((n, n), dtype=DTYPE)
+
+    for i in range(n):
+        a[i, i] = 1
+
+    return a
+
+
+cdef square_mult(np.ndarray[DTYPE_t, ndim=2] a, DTYPE_t m):
+    """ TODO """
+    int n = a.shape[0]
+    np.ndarray[DTYPE_t, ndim=2] b = np.zeros((n, n), dtype=DTYPE_t)
+
+    for i in range(n):
+        for j in range(n):
+            b[i, j] = a[i, j] * m
+
+    return b
+
+
+cdef square_add(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b):
+    """ TODO """
+    int n = a.shape[0]
+    np.ndarray[DTYPE_t, ndim=2] x = np.zeros((n, n), dtype=DTYPE_t)
+
+    for i in range(n):
+        for j in range(n):
+            x[i, j] = a[i, j] + b[i, j]
+
+    return x
+
+
+cdef square_tri_add(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b, np.ndarray[DTYPE_t, ndim=2] c):
+    """ TODO """
+    int n = a.shape[0]
+    np.ndarray[DTYPE_t, ndim=2] x = np.zeros((n, n), dtype=DTYPE_t)
+
+    for i in range(n):
+        for j in range(n):
+            x[i, j] = a[i, j] + b[i, j] + c[i, j]
+
+    return x
+
+
+cdef square_quad_add(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b, np.ndarray[DTYPE_t, ndim=2] c, np.ndarray[DTYPE_t, ndim=2] d):
+    """ TODO """
+    int n = a.shape[0]
+    np.ndarray[DTYPE_t, ndim=2] x = np.zeros((n, n), dtype=DTYPE_t)
+
+    for i in range(n):
+        for j in range(n):
+            x[i, j] = a[i, j] + b[i, j] + c[i, j] + d[i, j]
+
+    return x
+
+
+"""
+cdef square_dot(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b):
+    int n = a.shape[0]
+    cdef np.ndarray[DTYPE_t, ndim=2] x = np.zeros((n, n), dtype=DTYPE)
+
+    x[0, 0] = a[0] * b[:, 0]
+    x[1, 0] =
+"""
+
+
+# So many constants
+cdef DTYPE_t pade3_b0 = 120.
+cdef DTYPE_t pade3_b1 = 60.
+cdef DTYPE_t pade3_b2 = 12.
+cdef DTYPE_t pade3_b3 = 1.
+
+cdef DTYPE_t pade5_b0 = 30240.
+cdef DTYPE_t pade5_b1 = 15120.
+cdef DTYPE_t pade5_b2 = 3360.
+cdef DTYPE_t pade5_b3 = 420.
+cdef DTYPE_t pade5_b4 = 30.
+cdef DTYPE_t pade5_b5 = 1.
+
+cdef DTYPE_t pade7_b0 = 17297280.
+cdef DTYPE_t pade7_b1 = 8648640.
+cdef DTYPE_t pade7_b3 = 1995840.
+cdef DTYPE_t pade7_b3 = 277200.
+cdef DTYPE_t pade7_b4 = 25200.
+cdef DTYPE_t pade7_b5 = 1512.
+cdef DTYPE_t pade7_b6 = 56.
+cdef DTYPE_t pade7_b7 = 1.
+
+cdef DTYPE_t pade9_b0 = 17643225600.
+cdef DTYPE_t pade9_b1 = 8821612800.
+cdef DTYPE_t pade9_b2 = 2075673600.
+cdef DTYPE_t pade9_b3 = 302702400.
+cdef DTYPE_t pade9_b4 = 30270240.
+cdef DTYPE_t pade9_b5 = 2162160.
+cdef DTYPE_t pade9_b6 = 110880.
+cdef DTYPE_t pade9_b7 = 3960.
+cdef DTYPE_t pade9_b8 = 90.
+cdef DTYPE_t pade9_b9 = 1.
+
+cdef DTYPE_t pade13_b0 = 64764752532480000.
+cdef DTYPE_t pade13_b1 = 32382376266240000.
+cdef DTYPE_t pade13_b2 = 7771770303897600.
+cdef DTYPE_t pade13_b3 = 1187353796428800.
+cdef DTYPE_t pade13_b4 = 129060195264000.
+cdef DTYPE_t pade13_b5 = 10559470521600.
+cdef DTYPE_t pade13_b6 = 670442572800.
+cdef DTYPE_t pade13_b7 = 33522128640.
+cdef DTYPE_t pade13_b8 = 1323241920.
+cdef DTYPE_t pade13_b9 = 40840800.
+cdef DTYPE_t pade13_b10 = 960960.
+cdef DTYPE_t pade13_b11 = 16380.
+cdef DTYPE_t pade13_b12 = 182.
+cdef DTYPE_t pade13_b13 = 1.
