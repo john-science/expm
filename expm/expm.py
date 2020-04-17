@@ -48,8 +48,8 @@ def _pade3(A):
         tuple: Mystery Components
     """
     b = tuple([120., 60., 12., 1.])
-    shape = (len(A[:, 0]), len(A[0, :]))
-    ident = eye(*shape, dtype='float64')
+    n = A.shape[0]
+    ident = eye(n, n, dtype='float64')
     A2 = dot(A, A)
     U = dot(A, (b[3] * A2 + b[1] * ident))
     V = b[2] * A2 + b[0] * ident
@@ -65,8 +65,8 @@ def _pade5(A):
         tuple: Mystery Components
     """
     b = tuple([30240., 15120., 3360., 420., 30., 1.])
-    shape = (len(A[:, 0]), len(A[0, :]))
-    ident = eye(*shape, dtype='float64')
+    n = A.shape[0]
+    ident = eye(n, n, dtype='float64')
     A2 = dot(A, A)
     A4 = dot(A2, A2)
     U = dot(A, b[5] * A4 + b[3] * A2 + b[1] * ident)
@@ -83,8 +83,8 @@ def _pade7(A):
         tuple: Mystery Components
     """
     b = tuple([17297280., 8648640., 1995840., 277200., 25200., 1512., 56., 1.])
-    shape = (len(A[:, 0]), len(A[0, :]))
-    ident = eye(*shape, dtype='float64')
+    n = A.shape[0]
+    ident = eye(n, n, dtype='float64')
     A2 = dot(A, A)
     A4 = dot(A2, A2)
     A6 = dot(A4, A2)
@@ -102,8 +102,8 @@ def _pade9(A):
         tuple: Mystery Components
     """
     b = tuple([17643225600., 8821612800., 2075673600., 302702400., 30270240., 2162160., 110880., 3960., 90., 1.])
-    shape = (len(A[:, 0]), len(A[0, :]))
-    ident = eye(*shape, dtype='float64')
+    n = A.shape[0]
+    ident = eye(n, n, dtype='float64')
     A2 = dot(A, A)
     A4 = dot(A2, A2)
     A6 = dot(A4, A2)
@@ -123,8 +123,8 @@ def _pade13(A):
     """
     b = tuple([64764752532480000., 32382376266240000., 7771770303897600., 1187353796428800., 129060195264000.,
                10559470521600., 670442572800., 33522128640., 1323241920., 40840800., 960960., 16380., 182., 1.])
-    shape = (len(A[:, 0]), len(A[0, :]))
-    ident = eye(*shape, dtype='float64')
+    n = A.shape[0]
+    ident = eye(n, n, dtype='float64')
     A2 = dot(A, A)
     A4 = dot(A2, A2)
     A6 = dot(A4, A2)
