@@ -210,8 +210,8 @@ cdef square_identity(int n):
 
 cdef square_mult(np.ndarray[DTYPE_t, ndim=2] a, DTYPE_t m):
     """ TODO """
-    int n = a.shape[0]
-    np.ndarray[DTYPE_t, ndim=2] b = np.zeros((n, n), dtype=DTYPE_t)
+    cdef int n = a.shape[0]
+    cdef np.ndarray[DTYPE_t, ndim=2] b = np.zeros((n, n), dtype=DTYPE)
 
     for i in range(n):
         for j in range(n):
@@ -222,8 +222,8 @@ cdef square_mult(np.ndarray[DTYPE_t, ndim=2] a, DTYPE_t m):
 
 cdef square_add(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b):
     """ TODO """
-    int n = a.shape[0]
-    np.ndarray[DTYPE_t, ndim=2] x = np.zeros((n, n), dtype=DTYPE_t)
+    cdef int n = a.shape[0]
+    cdef np.ndarray[DTYPE_t, ndim=2] x = np.zeros((n, n), dtype=DTYPE)
 
     for i in range(n):
         for j in range(n):
@@ -234,8 +234,8 @@ cdef square_add(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b):
 
 cdef square_add3(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b, np.ndarray[DTYPE_t, ndim=2] c):
     """ TODO """
-    int n = a.shape[0]
-    np.ndarray[DTYPE_t, ndim=2] x = np.zeros((n, n), dtype=DTYPE_t)
+    cdef int n = a.shape[0]
+    cdef np.ndarray[DTYPE_t, ndim=2] x = np.zeros((n, n), dtype=DTYPE)
 
     for i in range(n):
         for j in range(n):
@@ -247,8 +247,8 @@ cdef square_add3(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b, n
 cdef square_add4(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b, np.ndarray[DTYPE_t, ndim=2] c,
                  np.ndarray[DTYPE_t, ndim=2] d):
     """ TODO """
-    int n = a.shape[0]
-    np.ndarray[DTYPE_t, ndim=2] x = np.zeros((n, n), dtype=DTYPE_t)
+    cdef int n = a.shape[0]
+    cdef np.ndarray[DTYPE_t, ndim=2] x = np.zeros((n, n), dtype=DTYPE)
 
     for i in range(n):
         for j in range(n):
@@ -260,8 +260,8 @@ cdef square_add4(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b, n
 cdef square_add5(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b, np.ndarray[DTYPE_t, ndim=2] c,
                  np.ndarray[DTYPE_t, ndim=2] d, np.ndarray[DTYPE_t, ndim=2] e):
     """ TODO """
-    int n = a.shape[0]
-    np.ndarray[DTYPE_t, ndim=2] x = np.zeros((n, n), dtype=DTYPE_t)
+    cdef int n = a.shape[0]
+    cdef np.ndarray[DTYPE_t, ndim=2] x = np.zeros((n, n), dtype=DTYPE)
 
     for i in range(n):
         for j in range(n):
@@ -295,7 +295,7 @@ cdef DTYPE_t pade5_b5 = 1.
 
 cdef DTYPE_t pade7_b0 = 17297280.
 cdef DTYPE_t pade7_b1 = 8648640.
-cdef DTYPE_t pade7_b3 = 1995840.
+cdef DTYPE_t pade7_b2 = 1995840.
 cdef DTYPE_t pade7_b3 = 277200.
 cdef DTYPE_t pade7_b4 = 25200.
 cdef DTYPE_t pade7_b5 = 1512.
