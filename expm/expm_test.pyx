@@ -75,8 +75,16 @@ cdef _pade3(np.ndarray[DTYPE_t, ndim=2] A):
     U = np.dot(A,
                square_add(square_mult(A2, pade3_b3),
                           square_mult(ident, pade3_b1)))
-    V = square_add(square_mult(A2, pade3_b2),
-                   square_mult(ident, pade3_b0))
+    #V = square_add(square_mult(A2, pade3_b2),
+    #               square_mult(ident, pade3_b0))
+
+    V = A2.copy()
+    for i in range(n):
+        for j in range(n):
+            V[i, j] *= pade3_b2
+    for i in range(n):
+        V[i, j] += pade3_b0
+
     return U, V
 
 
