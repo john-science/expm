@@ -13,3 +13,4 @@ The first step in trying to make performant code is to set strict bounds on the 
 * The performance will not be tested on matricies of size < 10x10.
 * The performance will not be tested on matricies of size > 100x100.
 * The performance testing will be done on Python v3.6.
+
