@@ -26,11 +26,12 @@ def generate_test_matricies():
     """ TODO """
     test_matrices = []
 
-    for n in range(15, 40, 1):
-        for d in [x / 100 for x in range(10, 101)]:
-            test_matrices.append(sparse.random(n, n, density=d).toarray())
+    for _ in range(10):
+        for n in range(15, 40, 1):
+            for d in [x / 100 for x in range(10, 101)]:
+                test_matrices.append(sparse.random(n, n, density=d).toarray())
 
-    for n in range(10, 101, 10):
+    for n in range(10, 101):
         for d in [0.25, 0.5, 0.9]:
             test_matrices.append(sparse.random(n, n, density=d).toarray())
 
