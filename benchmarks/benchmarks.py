@@ -9,6 +9,7 @@ from time import time
 # importing various matrix exponential implementations
 from expm import expm as expm_goal
 from expm.expm_test import expm_test
+from expm.expm_test2 import expm_test2
 from pure_python1 import expm as expm_python1
 from scipy.linalg import expm as expm_scipy
 
@@ -20,6 +21,7 @@ def main():
     print_time_results(expm_python1, 'Pure Python implementation', test_matrices)
     print_time_results(expm_goal, 'The goal implementation', test_matrices)
     print_time_results(expm_test, 'The pyx test implementation', test_matrices)
+    print_time_results(expm_test2, 'The pyx test 2 implementation', test_matrices)
 
 
 def generate_test_matricies():
