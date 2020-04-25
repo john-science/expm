@@ -278,16 +278,6 @@ cdef square_add5(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b, n
     return x
 
 
-"""
-cdef square_dot(np.ndarray[DTYPE_t, ndim=2] a, np.ndarray[DTYPE_t, ndim=2] b):
-    int n = a.shape[0]
-    cdef np.ndarray[DTYPE_t, ndim=2] x = np.zeros((n, n), dtype=DTYPE)
-
-    x[0, 0] = a[0] * b[:, 0]
-    x[1, 0] =
-"""
-
-
 # So many constants
 cdef DTYPE_t pade3_b0 = 120.
 cdef DTYPE_t pade3_b1 = 60.
