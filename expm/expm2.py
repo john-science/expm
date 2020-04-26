@@ -29,7 +29,7 @@ def expm2(A):
         U, V = _pade13(A)
 
     P = U + V  # p_m(A) : numerator
-    Q = -U + V  # q_m(A) : denominator
+    Q = V - U  # q_m(A) : denominator
     R = solve(Q, P)
 
     # squaring step to undo scaling
