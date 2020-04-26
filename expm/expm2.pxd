@@ -5,7 +5,7 @@ from numpy cimport ndarray, float_t
 ctypedef float_t DTYPE_t
 
 
-@cython.locals(A_L1=DTYPE_t, n_squarings=cython.int, U=ndarray, V=ndarray, P=ndarray, Q=ndarray, R=ndarray)
+@cython.locals(A_L1=DTYPE_t, n_squarings=int, U=ndarray, V=ndarray, P=ndarray, Q=ndarray, R=ndarray)
 cpdef ndarray expm2(ndarray A)
 
 

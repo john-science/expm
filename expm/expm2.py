@@ -8,7 +8,7 @@ def expm2(A):
     https://github.com/rngantner/Pade_PyCpp/blob/master/src/expm.py
 
     Args:
-        A: Matrix (shape(M,M)) to be exponentiated
+        A (np.array): Matrix (shape(M,M)) to be exponentiated
     Returns:
         np.array: Matrix (shape(M,M)) exponential of A
     """
