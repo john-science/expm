@@ -7,6 +7,8 @@
 This project exists purely out of necessity. The 'truth benchmark' I will use for all testing here will be the SciPy implementation of matrix exponentials
 ([scipy.linalg.expm](https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.expm.html)).
 
+I would like to point out that the fastest implementation I have found so far was from [rngantner on GitHub](https://github.com/rngantner/Pade_PyCpp/blob/master/src/expm.py).
+
 The first step in trying to make performant code is to set strict bounds on the problem you are willing to solve. So, the restrictions I will put on my implentation of `expm` will be:
 
 * The code must be callable from Python v3.
