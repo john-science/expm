@@ -15,16 +15,16 @@ def expm2(A):
     A_L1 = norm(A, 1)
     n_squarings = 0
 
-    if A_L1 < 1.495585217958292e-2:
+    if A_L1 < C0:
         U, V = _pade3(A)
-    elif A_L1 < 2.539398330063230e-1:
+    elif A_L1 < C1:
         U, V = _pade5(A)
-    elif A_L1 < 9.504178996162932e-1:
+    elif A_L1 < C2:
         U, V = _pade7(A)
-    elif A_L1 < 2.097847961257068:
+    elif A_L1 < C3:
         U, V = _pade9(A)
     else:
-        n_squarings = max(0, int(ceil(log2(A_L1 / 5.371920351148152))))
+        n_squarings = max(0, int(ceil(log2(A_L1 / C4))))
         A = A / 2 ** n_squarings
         U, V = _pade13(A)
 
@@ -174,3 +174,9 @@ pade13_b10 = 960960.
 pade13_b11 = 16380.
 pade13_b12 = 182.
 pade13_b13 = 1.
+
+C0 = 1.495585217958292e-2
+C1 = 2.539398330063230e-1
+C2 = 9.504178996162932e-1
+C3 = 2.097847961257068
+C4 = 5.371920351148152
