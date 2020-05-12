@@ -42,7 +42,7 @@ class ExpMTest(unittest.TestCase):
         assert_arrays_equal(out_scipy, phi, decimal=12)
 
     def test_expm_4(self):
-        """ nearly the identify matrix """
+        """ nearly the identity matrix """
         a = np.array([[1.0012, 0, 0.0003], [0.0075, 0.9876543, 0.0011], [0, 0, 0.9873]], dtype=np.float64)
         phi = expm(a)
         out_scipy = expm_scipy(a)
