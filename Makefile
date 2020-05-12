@@ -15,6 +15,9 @@ uninstall: clean
 install: uninstall
 	python setup.py install
 
+benchmark:
+	python benchmarks/benchmarks.py
+
 test:
 	python test/test_*.py
 
