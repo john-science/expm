@@ -76,3 +76,4 @@ cdef DTYPE_t pade13_b10 = 960960.
 cdef DTYPE_t pade13_b11 = 16380.
 cdef DTYPE_t pade13_b12 = 182.
 cdef DTYPE_t pade13_b13 = 1.
+

@@ -1,3 +1,5 @@
+""" Source of this EXPM implmentation: https://github.com/theJollySin/expm
+"""
 import numpy as np
 from numpy.linalg import norm, solve
 from numpy import eye, dot, ceil, log2
