@@ -1,7 +1,5 @@
 # expm
 
-> WORK IN PROGRESS! NO RESULT YET!
-
 > Trying to improve performance on Matrix Exponentials in Python
 
 This project exists purely out of necessity. The 'truth benchmark' I will use for all testing here will be the SciPy implementation of matrix exponentials
