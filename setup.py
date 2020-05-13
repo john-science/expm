@@ -24,8 +24,7 @@ try:
     from distutils.extension import Extension
     from Cython.Distutils import build_ext
     from Cython.Build import cythonize
-    cmdclass={'install': install,
-              'build_ext': build_ext}
+    cmdclass={'install': install, 'build_ext': build_ext}
     has_cython = True
 except:
     print('WARNING: You do not have Cython installed. Installation preceeding without Cython.')
@@ -66,13 +65,11 @@ setup(
                  'Topic :: Software Development :: Libraries :: Python Modules',
                  'Topic :: Scientific/Engineering :: Mathematics',
                  'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
-                 'Programming Language :: Python :: 3.3',
-                 'Programming Language :: Python :: 3.4',
                  'Programming Language :: Python :: 3.5',
                  'Programming Language :: Python :: 3.6',
                  'Programming Language :: Python :: 3.7',
                  'Natural Language :: English'],
-    python_requires='>=3.3, <3.8 ',
+    python_requires='>=3.5, <3.8 ',
     license='GPLv3',
     long_description='Trying to improve performance for matrix exponentials in Python.',
     long_description_content_type='text/markdown',
@@ -82,8 +79,7 @@ setup(
     test_suite="test",
     setup_requires=["numpy>=1.13.1,<=1.16.4"],
     install_requires=["cython>=0.27.0,<=0.29.16",
-                      "numpy>=1.13.1,<=1.16.4",
-                      "scipy==1.1.0"],
+                      "numpy>=1.13.1,<=1.16.4"],
     include_dirs=[np.get_include()],
     zip_safe=False)
 

@@ -5,11 +5,16 @@ import numpy as np
 import scipy.sparse as sparse
 from time import time
 # importing various matrix exponential implementations
+from scipy.linalg import expm as expm_scipy
 from expm import expm as expm_goal
-from expm.expm_test import expm_test
 from pure_python_vanilla import expm as expm_python1
 from pure_python_one_function import expm as expm_python2
-from scipy.linalg import expm as expm_scipy
+import pyximport
+pyximport.install()
+import pyximport
+pyximport.install(setup_args={"include_dirs":np.get_include()},
+                  reload_support=True)
+from expm_test import expm_test
 
 
 def main():
