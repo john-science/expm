@@ -22,8 +22,8 @@ def main():
     print_time_results(expm_scipy, test_matrices, 'SciPy implementation')
     print_time_results(expm_python1, test_matrices, 'Pure Python - Vanilla implementation')
     print_time_results(expm_python2, test_matrices, 'Pure Python - One Function implementation')
+    print_time_results(expm_test, test_matrices, 'Test pyx implementation')
     print_time_results(expm_goal, test_matrices, 'The goal implementation')
-    print_time_results(expm_test, test_matrices, 'The pyx test implementation')
 
 
 def generate_test_matricies():
