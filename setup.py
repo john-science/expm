@@ -10,6 +10,7 @@ To run the test suite any of the following will work:
     python setup.py test
     nosetests test/
     pytest test/
+    make test
 '''
 # non-controversial imports
 from setuptools import setup, find_packages
