@@ -1,4 +1,4 @@
-.PHONY: all clean uninstall install test
+.PHONY: all clean uninstall install benchmark test dist sdist twine
 
 all:
 	@grep -Ee '^[a-z].*:' Makefile | cut -d: -f1 | grep -vF all
