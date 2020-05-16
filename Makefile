@@ -21,3 +21,11 @@ benchmark:
 test:
 	python test/test_*.py
 
+dist: install
+	python setup.py sdist
+
+sdist: dist
+
+twine: dist
+	twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
+
