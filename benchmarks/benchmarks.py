@@ -12,8 +12,7 @@ from pure_python_one_function import expm as expm_python2
 import pyximport
 pyximport.install()
 import pyximport
-pyximport.install(setup_args={"include_dirs":np.get_include()},
-                  reload_support=True)
+pyximport.install(setup_args={"include_dirs":np.get_include()}, reload_support=True)
 from expm_test import expm_test
 
 
