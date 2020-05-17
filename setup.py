@@ -5,6 +5,10 @@ You can build locally with setuputils/distutils:
     pip install -r requirements.txt
     python setup.py install
 
+Or you can grab the library online:
+
+    pip install expm
+
 To run the test suite any of the following will work:
 
     python setup.py test
