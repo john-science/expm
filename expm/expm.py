@@ -2,7 +2,10 @@
 """
 import numpy as np
 from numpy.linalg import norm, solve
-from numpy import eye, dot, ceil, log2
+from numpy import eye, dot
+import cython
+if not cython.compiled:
+    from numpy import ceil, log2
 
 
 def expm(A):

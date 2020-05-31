@@ -1,5 +1,8 @@
 cimport cython
 from numpy cimport ndarray, float_t
+cdef extern from "math.h":
+     cpdef double log2(double x)
+     cpdef double ceil(double x)
 
 
 ctypedef float_t DTYPE_t
