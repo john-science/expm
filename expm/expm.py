@@ -52,7 +52,7 @@ def _pade3(A):
     Returns:
         tuple: Mystery Components
     """
-    n = A.shape[0]
+    n = len(A)
     ident = eye(n, n, dtype=np.float64)
     A2 = dot(A, A)
     U = dot(A, (pade3_b3 * A2 + pade3_b1 * ident))
@@ -68,7 +68,7 @@ def _pade5(A):
     Returns:
         tuple: Mystery Components
     """
-    n = A.shape[0]
+    n = len(A)
     ident = eye(n, n, dtype=np.float64)
     A2 = dot(A, A)
     A4 = dot(A2, A2)
@@ -85,7 +85,7 @@ def _pade7(A):
     Returns:
         tuple: Mystery Components
     """
-    n = A.shape[0]
+    n = len(A)
     ident = eye(n, n, dtype=np.float64)
     A2 = dot(A, A)
     A4 = dot(A2, A2)
@@ -103,7 +103,7 @@ def _pade9(A):
     Returns:
         tuple: Mystery Components
     """
-    n = A.shape[0]
+    n = len(A)
     ident = eye(n, n, dtype=np.float64)
     A2 = dot(A, A)
     A4 = dot(A2, A2)
@@ -122,7 +122,7 @@ def _pade13(A):
     Returns:
         tuple: Mystery Components
     """
-    n = A.shape[0]
+    n = len(A)
     ident = eye(n, n, dtype=np.float64)
     A2 = dot(A, A)
     A4 = dot(A2, A2)
