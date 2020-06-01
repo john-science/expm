@@ -79,6 +79,7 @@ setup(
     long_description='Trying to improve performance for matrix exponentials in Python.',
     long_description_content_type='text/markdown',
     packages=find_packages(),
+    package_data={'expm': ['*.pxd']},
     ext_modules=ext_modules_list,
     platforms='any',
     test_suite="test",
