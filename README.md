@@ -1,6 +1,6 @@
 # expm
-[![Build Status](https://travis-ci.com/theJollySin/expm.svg?branch=master)](https://travis-ci.com/theJollySin/expm)
-[![codecov](https://codecov.io/gh/theJollySin/expm/branch/master/graph/badge.svg)](https://codecov.io/gh/theJollySin/expm)
+[![Build Status](https://travis-ci.com/john-science/expm.svg?branch=master)](https://travis-ci.com/john-science/expm)
+[![codecov](https://codecov.io/gh/john-science/expm/branch/master/graph/badge.svg)](https://codecov.io/gh/john-science/expm)
 
 > Improving the performance of Matrix Exponentials in Python
 
